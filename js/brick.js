@@ -1,25 +1,28 @@
 class Brick {
-  constructor(location, width, height, color) {
-    this.location = location
-    this.width = width
-    this.height = height
-    this.color = color
-    this.points = 1
+  constructor(location, width, height, color, BallX2) {
+    this.location = location;
+    this.width = width;
+    this.height = height;
+    this.color = color;
+    this.points = 1;
+    this.BallX2Probability = BallX2Probability; // Probabilidad de que contenga BallX2
+    this.containsBallX2 = random(0, 1) < BallX2Probability; // Verifica si contiene BallX2
   }
+  
 
   display() {
-    fill(this.color)
-    rect(this.location.x, this.location.y, this.width, this.height)
+    fill(this.color);
+    rect(this.location.x, this.location.y, this.width, this.height);
   }
 
   isColliding(ball) {
     // collide with brick
     // AABB axis aligned bounding box
-    if(ball.location.y - ball.radius <= this.location.y + this.height &&
-        ball.location.y + ball.radius >= this.location.y &&
-        ball.location.x + ball.radius >= this.location.x &&
-        ball.location.x - ball.radius <= this.location.x + this.width) {
-          return true
-        }
+    if (ball.location.y - ball.radius <= this.location.y + this.height &&
+      ball.location.y + ball.radius >= this.location.y &&
+      ball.location.x + ball.radius >= this.location.x &&
+      ball.location.x - ball.radius <= this.location.x + this.width) {
+      return true;
+    }
   }
 }
