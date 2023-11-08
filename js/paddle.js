@@ -4,7 +4,7 @@ class Paddle {
       this.height = 10
       this.color = color(255)
       this.location = createVector((width / 2) - (this.width / 2), height - 75)
-      const speed = 8
+      const speed = 6
       this.speed = {
         right: createVector(speed, 0),
         left: createVector(speed * -1, 0)

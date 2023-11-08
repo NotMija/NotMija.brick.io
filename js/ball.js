@@ -1,10 +1,10 @@
 class Ball {
   constructor(paddle) {
     this.radius = 8;
-    this.size = this.radius * 6;
+    this.size = this.radius * 2;
     this.location = createVector(paddle.location.x + (paddle.width / 2), (paddle.location.y - this.radius - 5));
     this.color = color(255);
-    this.velocity = createVector(6, -6);
+    this.velocity = createVector(4, -4);
     this.paddle = paddle;
   }
 

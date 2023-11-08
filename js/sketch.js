@@ -1,11 +1,9 @@
-let BallX2Probability = 0.2; // Por ejemplo, 20% de probabilidad de BallX2
 let playerScore = 0;
 let paddle;
-let ball;
+let balls; // Arreglo para rastrear todas las bolas en juego
 let bricks;
 let gameState;
-let BallX2Img;
-let powerUps = []; // Arreglo para los power-ups
+let powerUps; // Arreglo para rastrear los power-ups
 
 function setup() {
   createCanvas(800, 600);
@@ -13,10 +11,11 @@ function setup() {
   let colors = createColors();
   gameState = 'playing';
   paddle = new Paddle();
-  ball = new Ball(paddle);
-
+  balls = [new Ball(paddle)]; // Agregamos la bola inicial al arreglo
   bricks = createBricks(colors);
+  powerUps = []; // Inicializamos el arreglo de power-ups
 }
+
 
 function createColors() {
   const colors = [];
@@ -30,39 +29,28 @@ function createColors() {
 }
 
 function createBricks(colors) {
-  const bricks = [];
-  const rows = 10;
-  const bricksPerRow = 10;
-  const brickWidth = width / bricksPerRow;
-
+  const bricks = []
+  const rows = 10
+  const bricksPerRow = 15
+  const brickWidth = width / bricksPerRow
   for (let row = 0; row < rows; row++) {
     for (let i = 0; i < bricksPerRow; i++) {
-      // Define la probabilidad de que un ladrillo contenga BallX2
-      const BallX2Probability = 0.2; // Por ejemplo, 20% de probabilidad de BallX2
-      const containsBallX2 = random() < BallX2Probability;
-      const brick = new Brick(
-        createVector(brickWidth * i, 25 * row),
-        brickWidth,
-        25,
-        colors[floor(random(0, colors.length))],
-        containsBallX2 ? new BallX2(brickWidth * i, 25 * row) : null
-      );
-      bricks.push(brick);
+      brick = new Brick(createVector(brickWidth * i, 25 * row), brickWidth, 25, colors[floor(random(0, colors.length))])
+      bricks.push(brick) 
     }
   }
-
-  return bricks;
+  return bricks
 }
-
-
-
 function draw() {
   if (gameState === 'playing') {
     background(0);
 
-    ball.bounceEdge();
-    ball.bouncePaddle();
-    ball.update();
+    for (let i = 0; i < balls.length; i++) {
+      const ball = balls[i];
+      ball.bounceEdge();
+      ball.bouncePaddle();
+      ball.update();
+    }
 
     if (keyIsDown(LEFT_ARROW)) {
       paddle.move('left');
@@ -72,29 +60,53 @@ function draw() {
 
     for (let i = bricks.length - 1; i >= 0; i--) {
       const brick = bricks[i];
-      if (brick && brick.isColliding(ball)) {
-        if (brick.containsBallX2) {
-          // Agrega el BallX2 al arreglo de power-ups
-          powerUps.push(brick.BallX2);
-          brick.containsBallX2 = false; // Desactiva el BallX2 en el ladrillo
+      if (brick && brick.isColliding(balls[0])) { // Comprobamos solo con la primera bola
+        const releasedPowerUp = brick.releasePowerUp();
+        if (releasedPowerUp) {
+          powerUps.push(releasedPowerUp);
         }
-
-        ball.reverse('y');
+    
+        for (let j = 0; j < balls.length; j++) {
+          balls[j].reverse('y');
+        }
+    
         bricks.splice(i, 1);
         playerScore += brick.points;
       } else {
         brick.display();
       }
     }
+    
+    // Agrega la lógica para generar power-ups aleatoriamente
+    for (let i = powerUps.length - 1; i >= 0; i--) {
+      const powerUp = powerUps[i];
+      powerUp.display();
+      powerUp.update();
+    
+      // Si un power-up cae debajo del fondo, elimínalo
+      if (powerUp.location.y > height) {
+        powerUps.splice(i, 1);
+      }
+      
+    }
+    
 
     paddle.display();
-    ball.display();
+
+    for (let i = balls.length - 1; i >= 0; i--) {
+      const ball = balls[i];
+      ball.display();
+
+      if (ball.belowBottom()) {
+        balls.splice(i, 1);
+      }
+    }
 
     textSize(32);
     fill(255);
     text(`Score:${playerScore}`, width - 770, 580);
 
-    if (ball.belowBottom()) {
+    if (balls.length === 0) { // Si no quedan bolas en juego
       gameState = 'Lose';
     }
 
