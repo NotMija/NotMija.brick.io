@@ -3,8 +3,8 @@ class BallX2 {
     this.radius = 8;
     this.size = this.radius * 3;
     this.location = location;
-    this.velocity = createVector(0, 2); // Ajusta la velocidad
-    this.image = loadImage('./art/MULTI.png'); // Carga la imagen del power-up
+    this.velocity = createVector(0, 2);
+    this.image = loadImage('./art/MULTI.png');
   }
 
   display() {
@@ -15,12 +15,18 @@ class BallX2 {
     this.location.add(this.velocity);
   }
 
-  split() {
-    const newBalls = [
-      new Ball(this.paddle, this.location.x, this.location.y),
-      new Ball(this.paddle, this.location.x, this.location.y)
-    ];
-
-    return newBalls;
+  splitBall(balls) {
+    if (balls.length > 0) {
+      const newBalls = [];
+      for (let i = 0; i < balls.length; i++) {
+        const newBall = new Ball(balls[i].paddle);
+        newBall.location.x = this.location.x; // Ajusta la posición inicial si es necesario
+        newBalls.push(newBall);
+      }
+  
+      return newBalls;
+    }
+    return [];
   }
+  
 }

@@ -8,8 +8,8 @@ class Ball {
     this.paddle = paddle;
   }
 
+  //colision con la pala
   bouncePaddle() {
-    // We are within the width of the paddle
     if (this.location.x + this.radius >= this.paddle.location.x &&
       this.location.x - this.radius <= this.paddle.location.x + this.paddle.width) {
       if (this.location.y + this.radius > this.paddle.location.y) {
@@ -19,12 +19,14 @@ class Ball {
     }
   }
 
+  //colision pelota bordes
+
   bounceEdge() {
-    if (this.location.x + this.radius >= width) { // Check right edge
+    if (this.location.x + this.radius >= width) { 
       this.reverse('x');
-    } else if (this.location.x - this.radius <= 0) { // Check left edge
+    } else if (this.location.x - this.radius <= 0) {
       this.reverse('x');
-    } else if (this.location.y - this.radius <= 0) { // Check the top
+    } else if (this.location.y - this.radius <= 0) {
       this.reverse('y');
     }
   }
@@ -45,4 +47,6 @@ class Ball {
   belowBottom() {
     return this.location.y - this.radius > height;
   }
+
+  
 }

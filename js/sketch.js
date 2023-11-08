@@ -36,20 +36,26 @@ function createBricks(colors) {
   for (let row = 0; row < rows; row++) {
     for (let i = 0; i < bricksPerRow; i++) {
       brick = new Brick(createVector(brickWidth * i, 25 * row), brickWidth, 25, colors[floor(random(0, colors.length))])
-      bricks.push(brick) 
+      bricks.push(brick)
     }
   }
   return bricks
 }
+
 function draw() {
   if (gameState === 'playing') {
     background(0);
+    paddle.display();
+    textSize(32);
+    fill(255);
+    text(`Score: ${playerScore}`, width - 770, 580);
 
     for (let i = 0; i < balls.length; i++) {
       const ball = balls[i];
       ball.bounceEdge();
       ball.bouncePaddle();
       ball.update();
+      ball.display();
     }
 
     if (keyIsDown(LEFT_ARROW)) {
@@ -65,62 +71,60 @@ function draw() {
         if (releasedPowerUp) {
           powerUps.push(releasedPowerUp);
         }
-    
+
         for (let j = 0; j < balls.length; j++) {
           balls[j].reverse('y');
         }
-    
+
         bricks.splice(i, 1);
         playerScore += brick.points;
       } else {
         brick.display();
       }
     }
-    
-    // Agrega la lógica para generar power-ups aleatoriamente
+
+    // POWERS UPS ALEATORIOS 
     for (let i = powerUps.length - 1; i >= 0; i--) {
       const powerUp = powerUps[i];
       powerUp.display();
       powerUp.update();
-    
-      // Si un power-up cae debajo del fondo, elimínalo
-      if (powerUp.location.y > height) {
-        powerUps.splice(i, 1);
+
+      if (powerUp.location.y + powerUp.size / 2 > paddle.location.y && powerUp.location.y - powerUp.size / 2 < paddle.location.y + paddle.height) {
+        // Colisión con el paddle
+        if (powerUp.location.x + powerUp.size / 2 > paddle.location.x && powerUp.location.x - powerUp.size / 2 < paddle.location.x + paddle.width) {
+          if (powerUp instanceof BallX2) {
+            // Aplicar el power-up BallX2
+            const newBalls = powerUp.splitBall(balls, paddle); // Divide la pelota
+            balls = balls.concat(newBalls); // Agrega las nuevas bolas al arreglo de bolas
+          }
+          powerUps.splice(i, 1); // Elimina el power-up si no toca la pala
+        }
       }
-      
-    }
-    
 
-    paddle.display();
+      for (let i = balls.length - 1; i >= 0; i--) {
+        const ball = balls[i];
+        ball.display();
 
-    for (let i = balls.length - 1; i >= 0; i--) {
-      const ball = balls[i];
-      ball.display();
-
-      if (ball.belowBottom()) {
-        balls.splice(i, 1);
+        if (ball.belowBottom()) {
+          balls.splice(i, 1);
+        }
       }
-    }
 
-    textSize(32);
-    fill(255);
-    text(`Score:${playerScore}`, width - 770, 580);
-
-    if (balls.length === 0) { // Si no quedan bolas en juego
-      gameState = 'Lose';
-    }
-
-    if (bricks.length === 0) {
-      gameState = 'Win';
-    }
-  } else {
-    textSize(100);
-    if (gameState === 'Lose') {
-      fill(255, 0, 255);
-      gameOver();
-    } else if (gameState === 'Win') {
-      fill(255);
-      text('You Win!!!', width / 2 - 180, height / 2);
+      if (balls.length === 0) { // Si no quedan bolas en juego
+        gameState = 'Lose';
+      }
+      if (bricks.length === 0) {
+        gameState = 'Win';
+      } else {
+        textSize(100);
+        if (gameState === 'Lose') {
+          fill(255, 0, 255);
+          gameOver();
+        } else if (gameState === 'Win') {
+          fill(255);
+          text('You Win!!!', width / 2 - 180, height / 2);
+        }
+      }
     }
   }
 }
