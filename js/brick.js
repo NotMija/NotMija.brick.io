@@ -23,11 +23,17 @@ class Brick {
   }
 
   isColliding(ball) {
+    if (!ball) {
+      return false; // No colisión si 'ball' es undefined
+    }
+  
     if (ball.location.y - ball.radius <= this.location.y + this.height &&
-      ball.location.y + ball.radius >= this.location.y &&
-      ball.location.x + ball.radius >= this.location.x &&
-      ball.location.x - ball.radius <= this.location.x + this.width) {
+        ball.location.y + ball.radius >= this.location.y &&
+        ball.location.x + ball.radius >= this.location.x &&
+        ball.location.x - ball.radius <= this.location.x + this.width) {
       return true;
     }
+  
+    return false; // No colisión en otros casos
   }
 }

@@ -56,31 +56,28 @@ function draw() {
       ball.bouncePaddle();
       ball.update();
       ball.display();
+
+      for (let j = bricks.length - 1; j >= 0; j--) {
+        const brick = bricks[j];
+        if (brick && brick.isColliding(ball)) {
+          const releasedPowerUp = brick.releasePowerUp();
+          if (releasedPowerUp) {
+            powerUps.push(releasedPowerUp);
+          }
+
+          ball.reverse('y');
+          bricks.splice(j, 1);
+          playerScore += brick.points;
+        } else {
+          brick.display();
+        }
+      }
     }
 
     if (keyIsDown(LEFT_ARROW)) {
       paddle.move('left');
     } else if (keyIsDown(RIGHT_ARROW)) {
       paddle.move('right');
-    }
-
-    for (let i = bricks.length - 1; i >= 0; i--) {
-      const brick = bricks[i];
-      if (brick && brick.isColliding(balls[0])) { // Comprobamos solo con la primera bola
-        const releasedPowerUp = brick.releasePowerUp();
-        if (releasedPowerUp) {
-          powerUps.push(releasedPowerUp);
-        }
-
-        for (let j = 0; j < balls.length; j++) {
-          balls[j].reverse('y');
-        }
-
-        bricks.splice(i, 1);
-        playerScore += brick.points;
-      } else {
-        brick.display();
-      }
     }
 
     // POWERS UPS ALEATORIOS 
@@ -126,7 +123,6 @@ function draw() {
     }
   }
 }
-
 
 function gameOver() {
   background(0);
