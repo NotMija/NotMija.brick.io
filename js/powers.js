@@ -30,3 +30,26 @@ class BallX2 {
   }
   
 }
+
+class PaddleUP {
+  constructor(location) {
+    this.widthIncrease = 20;
+    this.image = loadImage('./art/masTamaño.png');
+    this.location = location;
+    this.velocity = createVector(0, 2);
+    this.isActive = false; // Nueva propiedad para rastrear el estado del PaddleUP
+  }
+  
+
+  display() {
+    image(this.image, this.location.x, this.location.y, this.widthIncrease, 10);
+  }
+
+  update() {
+    this.location.add(this.velocity);
+  }
+
+  applyEffect(paddle) {
+    paddle.width += this.widthIncrease;
+  }
+}
