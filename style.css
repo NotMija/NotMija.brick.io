@@ -2,4 +2,56 @@ html, body {
     margin: 0;
     padding: 10;
   }
+
+body{
+  background-color: rgb(255, 255, 255);
+  height: 100vh;
+}
+
+.caja{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+#miCanvas{
+}
   
+h1 {
+  margin: 0px;
+  margin-top: 5px;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  -webkit-text-stroke: 1px white; /* Ancho y color del borde */
+  color: gray; /* Color del texto */
+  text-align: center;
+  background-image: url(art/obra.png);
+  background-size:38%;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 130px;
+  display: flex;
+  justify-content: center;
+  align-items: end;
+}
+.imagenes {
+  position: relative;
+}
+
+#manolo {
+  padding-left: 90px;
+  position: absolute;
+  width: 220px;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+}
+
+#benito {
+  padding-right: 75px;
+  position: absolute;
+  width: 235px;
+  bottom: 0;
+  right: 0;
+  z-index: -1;
+}

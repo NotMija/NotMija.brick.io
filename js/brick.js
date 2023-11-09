@@ -13,7 +13,7 @@ class Brick {
     rect(this.location.x, this.location.y, this.width, this.height);
   }
 
-  // Nueva función para liberar el power-up
+  // liberar el power-up
   releasePowerUp() {
     if (this.containsBallX2) {
       this.containsBallX2 = false; // Desactiva el BallX2 en el ladrillo
