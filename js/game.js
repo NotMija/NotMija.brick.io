@@ -116,12 +116,27 @@ function draw() {
     if (bricks.length === 0) {
       gameState = 'Win';
     }
-
+    if (gameState === 'Win') {
+      // mensaje de "YOU WIN" y la puntuación
+      youWin();
+    }
+  }
     if (gameState === 'Lose') {
       // mensaje de "GAME OVER" y la puntuación
       gameOver();
     }
   }
+
+function youWin() {
+  background(0);
+  textSize(32);
+  textAlign(CENTER);
+  fill(80, 255, 80);
+  text('YOU WIN', width / 2, height / 2);
+
+  textSize(24);
+  fill(255);
+  text(`Score: ${playerScore}`, width / 2, height / 2 + 40);
 }
 
 function gameOver() {

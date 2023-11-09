@@ -5,7 +5,7 @@ class Brick {
     this.height = height;
     this.color = color;
     this.points = 1;
-    this.containsBallX2 = random() < 0.2; // 20% de posibilidades de contener BallX2
+    this.containsBallX2 = random() < 0.07; // 7% de posibilidades de contener BallX2
   }
 
   display() {
