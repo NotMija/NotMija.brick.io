@@ -11,9 +11,9 @@ function setup() {
   let colors = createColors();
   gameState = 'playing';
   paddle = new Paddle();
-  balls = [new Ball(paddle)]; // Agregamos la bola inicial al arreglo
+  balls = [new Ball(paddle)];
   bricks = createBricks(colors);
-  powerUps = []; // Inicializamos el arreglo de power-ups
+  powerUps = []; // power-ups
 }
 
 
@@ -93,42 +93,41 @@ function draw() {
         // Colisión con el paddle
         if (powerUp.location.x + powerUp.size / 2 > paddle.location.x && powerUp.location.x - powerUp.size / 2 < paddle.location.x + paddle.width) {
           if (powerUp instanceof BallX2) {
-            // Aplicar el power-up BallX2
+            // Aplicar BallX2
             const newBalls = powerUp.splitBall(balls, paddle); // Divide la pelota
             balls = balls.concat(newBalls); // Agrega las nuevas bolas al arreglo de bolas
           }
           powerUps.splice(i, 1); // Elimina el power-up si no toca la pala
         }
       }
+    }
 
-      for (let i = balls.length - 1; i >= 0; i--) {
-        const ball = balls[i];
-        ball.display();
-      
-        if (ball.belowBottom()) {
-          balls.splice(i, 1);
-        }
+    //la caida de la pelota W or L
+    for (let i = balls.length - 1; i >= 0; i--) {
+      const ball = balls[i];
+      ball.display();
+    
+      if (ball.belowBottom()) {
+        balls.splice(i, 1);
       }
-      
-      if (balls.length === 0) { // Si no quedan bolas en juego
-        gameState = 'Lose';
-      }
-      
-      if (bricks.length === 0) {
-        gameState = 'Win';
-      }
-      
-      if (balls.length === 0 && gameState !== 'Win') { // Si no quedan bolas y no se ha ganado
-        gameState = 'Lose';
-      }
-      
-      if (gameState === 'Lose') {
-        // Muestra el mensaje de "GAME OVER" y la puntuación
-        gameOver();
-      }
+    }
+
+    if (balls.length === 0) {
+      gameState = 'Lose';
+    }
+
+    if (bricks.length === 0) {
+      gameState = 'Win';
+    }
+
+    if (gameState === 'Lose') {
+      // mensaje de "GAME OVER" y la puntuación
+      gameOver();
     }
   }
 }
+
+
 function gameOver() {
   background(0);
   textSize(32);
