@@ -104,31 +104,31 @@ function draw() {
       for (let i = balls.length - 1; i >= 0; i--) {
         const ball = balls[i];
         ball.display();
-
+      
         if (ball.belowBottom()) {
           balls.splice(i, 1);
         }
       }
-
+      
       if (balls.length === 0) { // Si no quedan bolas en juego
         gameState = 'Lose';
       }
+      
       if (bricks.length === 0) {
         gameState = 'Win';
-      } else {
-        textSize(100);
-        if (gameState === 'Lose') {
-          fill(255, 0, 255);
-          gameOver();
-        } else if (gameState === 'Win') {
-          fill(255);
-          text('You Win!!!', width / 2 - 180, height / 2);
-        }
+      }
+      
+      if (balls.length === 0 && gameState !== 'Win') { // Si no quedan bolas y no se ha ganado
+        gameState = 'Lose';
+      }
+      
+      if (gameState === 'Lose') {
+        // Muestra el mensaje de "GAME OVER" y la puntuación
+        gameOver();
       }
     }
   }
 }
-
 function gameOver() {
   background(0);
   textSize(32);

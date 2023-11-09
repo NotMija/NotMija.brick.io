@@ -1,6 +1,6 @@
 class Paddle {
     constructor() {
-      this.width = 900
+      this.width = 150
       this.height = 10
       this.color = color(255)
       this.location = createVector((width / 2) - (this.width / 2), height - 75)
