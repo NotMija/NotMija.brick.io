@@ -55,7 +55,7 @@ h1 {
 }
 
 footer {
-  margin-top: 149px;
+  margin-top: 79px;
   background-image: url(art/footer.jpg);
   height: 50px;
   padding: 10px;
@@ -63,4 +63,51 @@ footer {
   align-items: center;
   text-align: center;
   justify-content: center;
+}
+
+.boton {
+  padding-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button{
+  align-items: center;
+  background-color: rgb(236, 170, 83);
+  height: 50px;
+  text-align: center;
+  font-size: 1rem;
+  color: white;
+}
+
+/* pantallas portatiles*/ 
+
+@media (max-width: 1450px) {
+  h1 {
+    height: 150px; /* Ajusta la altura según sea necesario */
+  }
+
+  #manolo {
+    padding-left: 40px; /* Ajusta el padding izquierdo según sea necesario */
+    width: 250px; /* Ajusta el ancho según sea necesario */
+  }
+
+  #benito {
+    padding-right: 40px; /* Ajusta el padding derecho según sea necesario */
+    width: 265px; /* Ajusta el ancho según sea necesario */
+  }
+
+  footer {
+    margin-top: 100px; /* Ajusta el margen superior según sea necesario */
+  }
+
+  .boton {
+    padding-top: 30px; /* Ajusta el padding superior según sea necesario */
+  }
+
+  button {
+    height: 60px; /* Ajusta la altura según sea necesario */
+    font-size: 1.2rem; /* Ajusta el tamaño de fuente según sea necesario */
+  }
 }
