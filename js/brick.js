@@ -5,8 +5,9 @@ class Brick {
     this.height = height;
     this.color = color;
     this.points = 1;
-    this.containsBallX2 = random() < 0.07; // 7% de posibilidades de contener BallX2
-    this.containsPaddleUP = random() < 0.07; // 7% de posibilidades
+    this.containsBallX2 = random() < 0.04; // 4% de posibilidades de contener BallX2
+    this.containsPaddleUP = random() < 0.02; // 2% de posibilidades
+    this.containsPaddleDown = random() < 0.05; // 5% de posibilidades
   }
 
   display() {
@@ -31,18 +32,25 @@ class Brick {
     return null;
   }
 
+  releasePowerUp3() {
+    if (this.containsPaddleDown) {
+      this.containsPaddleDown = false;
+      return new PaddleDown(createVector(this.location.x + this.width / 2, this.location.y + this.height));
+    }
+    return null;
+  }
+
   isColliding(ball) {
     if (ball && ball.location) { // Verifica que 'ball' y 'ball.location' estén definidos
       if (ball.location.y - ball.radius <= this.location.y + this.height &&
-          ball.location.y + ball.radius >= this.location.y &&
-          ball.location.x + ball.radius >= this.location.x &&
-          ball.location.x - ball.radius <= this.location.x + this.width) {
+        ball.location.y + ball.radius >= this.location.y &&
+        ball.location.x + ball.radius >= this.location.x &&
+        ball.location.x - ball.radius <= this.location.x + this.width) {
         return true;
       }
     }
     return false;
   }
-}  
-  
-  
-  
+}
+
+

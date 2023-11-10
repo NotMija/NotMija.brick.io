@@ -4,7 +4,7 @@ let balls; // Arreglo para rastrear todas las bolas en juego
 let bricks;
 let gameState;
 let powerUps; // Arreglo para rastrear los power-ups
-let paddleUPItems = []
+let paddles;
 
 function setup() {
   let canvas = createCanvas(900, 600);
@@ -14,7 +14,8 @@ function setup() {
   paddle = new Paddle();
   balls = [new Ball(paddle)];
   bricks = createBricks(colors);
-  powerUps = []; // power-ups
+  powerUps = [];
+  paddles = [paddle] // power-ups
 }
 
 
@@ -51,47 +52,8 @@ function draw() {
     textSize(32);
     fill(255);
     text(`Score: ${playerScore}`, width - 870, 580);
-
-    // Actualiza la posición de los PaddleUPItems
-    for (let i = paddleUPItems.length - 1; i >= 0; i--) {
-      const item = paddleUPItems[i];
-      item.update();
-      item.display();
-
-      if (item.location.y > height) {
-        // Elimina el ítem si cae por debajo del fondo
-        paddleUPItems.splice(i, 1);
-      } else if (!item.isActive && item.location.y + 10 / 2 > paddle.location.y &&
-        item.location.y - 10 / 2 < paddle.location.y + paddle.height &&
-        item.location.x + 10 / 2 > paddle.location.x &&
-        item.location.x - 10 / 2 < paddle.location.x + paddle.width) {
-        item.isActive = true; // Marca el PaddleUP como activo
-        paddle.width += item.widthIncrease; // Aplica el efecto
-        paddleUPItems.splice(i, 1); // Elimina el ítem
-      }
-    }
-
-    // Probabilidad de crear nuevos PaddleUP al romper ladrillos
-    for (let i = bricks.length - 1; i >= 0; i--) {
-      const brick = bricks[i];
-      if (brick.isColliding(balls)) {
-        const releasedPowerUp2 = brick.releasedPowerUp2();
-        if (releasedPowerUp2 && releasedPowerUp2 instanceof PaddleUP) {
-          paddleUPItems.push(releasedPowerUp2);
-        }
-        ball.reverse('y');
-        bricks.splice(i, 1);
-        playerScore += brick.points;
-      }
-    }
-
-    // Probabilidad de crear un nuevo PaddleUP
-    if (random() < 0.01) {
-      const newPaddleUP = new PaddleUP(createVector(random(width), 0));
-      paddleUPItems.push(newPaddleUP);
-    }
-
-        
+  
+    // Romper ladrillos caen los items
     for (let i = 0; i < balls.length; i++) {
       const ball = balls[i];
       ball.bounceEdge();
@@ -103,8 +65,19 @@ function draw() {
         const brick = bricks[j];
         if (brick && brick.isColliding(ball)) {
           const releasedPowerUp = brick.releasePowerUp();
+          const releasedPowerUp2 = brick.releasePowerUp2();
+          const releasedPowerUp3 = brick.releasePowerUp3();
+
           if (releasedPowerUp) {
             powerUps.push(releasedPowerUp);
+          }
+
+          if (releasedPowerUp2) {
+            powerUps.push(releasedPowerUp2);
+          }
+
+          if (releasedPowerUp3) {
+            powerUps.push(releasedPowerUp3);
           }
 
           ball.reverse('y');
@@ -163,7 +136,26 @@ function draw() {
   if (gameState === 'Lose') {
     gameOver();
   }
-}
+
+  for (let i = powerUps.length - 1; i >= 0; i--) {
+    const powerUp = powerUps[i];
+    powerUp.display();
+    powerUp.update();
+  
+    for (let j = 0; j < paddles.length; j++) {
+      const paddle = paddles[j];
+  
+      // Verificar si la power-up está colisionando con el paddle
+      if (typeof powerUp.isColliding === 'function' && powerUp.isColliding(paddle)) {
+        if (powerUp instanceof PaddleUP) {
+          powerUp.applyEffect(paddle);
+        } else if (powerUp instanceof PaddleDown) {
+          powerUp.applyEffect(paddle);
+        }
+        powerUps.splice(i, 1); // Eliminar el power-up después de aplicar el efecto
+      }
+    }
+  }
 
 function youWin() {
   background(0);
@@ -187,4 +179,5 @@ function gameOver() {
   textSize(24);
   fill(255);
   text(`Score: ${playerScore}`, width / 2, height / 2 + 40);
+}
 }

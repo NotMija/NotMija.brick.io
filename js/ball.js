@@ -4,7 +4,7 @@ class Ball {
     this.size = this.radius * 2;
     this.location = createVector(paddle.location.x + (paddle.width / 2), (paddle.location.y - this.radius - 5));
     this.color = color(255);
-    this.velocity = createVector(8, -8);
+    this.velocity = createVector(4, -4);
     this.paddle = paddle;
   }
 
@@ -22,7 +22,7 @@ class Ball {
   //colision pelota bordes
 
   bounceEdge() {
-    if (this.location.x + this.radius >= width) { 
+    if (this.location.x + this.radius >= width) {
       this.reverse('x');
     } else if (this.location.x - this.radius <= 0) {
       this.reverse('x');
@@ -47,6 +47,4 @@ class Ball {
   belowBottom() {
     return this.location.y - this.radius > height;
   }
-
-  
 }
