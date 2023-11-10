@@ -15,10 +15,10 @@ function setup() {
   balls = [new Ball(paddle)];
   bricks = createBricks(colors);
   powerUps = [];
-  paddles = [paddle] // power-ups
+  paddles = [paddle] // para que aumente o se recorte
 }
 
-
+// Colores y crear los brick filas, colums
 function createColors() {
   const colors = [];
   colors.push(color(265, 165, 0));
@@ -44,6 +44,7 @@ function createBricks(colors) {
   }
   return bricks;
 }
+//TODO LO QUE SE DIBUJA EN EL CANVAS
 
 function draw() {
   if (gameState === 'playing') {
@@ -52,7 +53,7 @@ function draw() {
     textSize(32);
     fill(255);
     text(`Score: ${playerScore}`, width - 870, 580);
-  
+
     // Romper ladrillos caen los items
     for (let i = 0; i < balls.length; i++) {
       const ball = balls[i];
@@ -88,12 +89,14 @@ function draw() {
         }
       }
     }
-
+    //MOV IZQ O DRCH PALA
     if (keyIsDown(LEFT_ARROW)) {
       paddle.move('left');
     } else if (keyIsDown(RIGHT_ARROW)) {
       paddle.move('right');
     }
+
+    // SI LOS ITEMS TOCAN LA PALA Y CLEAN 
 
     for (let i = powerUps.length - 1; i >= 0; i--) {
       const powerUp = powerUps[i];
@@ -112,6 +115,8 @@ function draw() {
         }
       }
     }
+
+    // DETECTART WIM OR LOST CAIDA PELOTAS 
 
     for (let i = balls.length - 1; i >= 0; i--) {
       const ball = balls[i];
@@ -137,14 +142,16 @@ function draw() {
     gameOver();
   }
 
+  //borrar powers de paddel y que se apliquen
+
   for (let i = powerUps.length - 1; i >= 0; i--) {
     const powerUp = powerUps[i];
     powerUp.display();
     powerUp.update();
-  
+
     for (let j = 0; j < paddles.length; j++) {
       const paddle = paddles[j];
-  
+
       // Verificar si la power-up está colisionando con el paddle
       if (typeof powerUp.isColliding === 'function' && powerUp.isColliding(paddle)) {
         if (powerUp instanceof PaddleUP) {
@@ -152,32 +159,33 @@ function draw() {
         } else if (powerUp instanceof PaddleDown) {
           powerUp.applyEffect(paddle);
         }
-        powerUps.splice(i, 1); // Eliminar el power-up después de aplicar el efecto
+        powerUps.splice(i, 1); // Eliminar el power
       }
     }
   }
 
-function youWin() {
-  background(0);
-  textSize(32);
-  textAlign(CENTER);
-  fill(80, 255, 80);
-  text('YOU WIN', width / 2, height / 2);
+  function youWin() {
+    background(0);
+    textSize(32);
+    textAlign(CENTER);
+    fill(80, 255, 80);
+    text('YOU WIN', width / 2, height / 2);
 
-  textSize(24);
-  fill(255);
-  text(`Score: ${playerScore}`, width / 2, height / 2 + 40);
-}
+    textSize(24);
+    fill(255);
+    text(`Score: ${playerScore}`, width / 2, height / 2 + 40);
+  }
 
-function gameOver() {
-  background(0);
-  textSize(32);
-  textAlign(CENTER);
-  fill(255, 80, 80);
-  text('GAME OVER', width / 2, height / 2);
+  function gameOver() {
+    background(0);
+    textSize(32);
+    textAlign(CENTER);
+    fill(255, 80, 80);
+    text('GAME OVER', width / 2, height / 2);
 
-  textSize(24);
-  fill(255);
-  text(`Score: ${playerScore}`, width / 2, height / 2 + 40);
-}
+    textSize(24);
+    fill(255);
+    text(`Score: ${playerScore}`, width / 2, height / 2 + 40);
+  }
+
 }
