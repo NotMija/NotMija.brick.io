@@ -4,7 +4,7 @@ class Ball {
     this.size = this.radius * 2;
     this.location = createVector(paddle.location.x + (paddle.width / 2), (paddle.location.y - this.radius - 5));
     this.color = color(255);
-    this.velocity = createVector(4, -4);
+    this.velocity = createVector(3, -4);
     this.paddle = paddle;
   }
 

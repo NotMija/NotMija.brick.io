@@ -16,6 +16,7 @@ function setup() {
   bricks = createBricks(colors);
   powerUps = [];
   paddles = [paddle] // para que aumente o se recorte
+  window.addEventListener('keydown', reiniciarConTeclaF);
 }
 
 // Colores y crear los brick filas, colums
@@ -66,19 +67,19 @@ function draw() {
         const brick = bricks[j];
         if (brick && brick.isColliding(ball)) {
           const releasedPowerUp = brick.releasePowerUp();
-          const releasedPowerUp2 = brick.releasePowerUp2();
-          const releasedPowerUp3 = brick.releasePowerUp3();
+          const releasePowerUpMas = brick.releasePowerUpMas();
+          const releasePowerUpMenos = brick.releasePowerUpMenos();
 
           if (releasedPowerUp) {
             powerUps.push(releasedPowerUp);
           }
 
-          if (releasedPowerUp2) {
-            powerUps.push(releasedPowerUp2);
+          if (releasePowerUpMas) {
+            powerUps.push(releasePowerUpMas);
           }
 
-          if (releasedPowerUp3) {
-            powerUps.push(releasedPowerUp3);
+          if (releasePowerUpMenos) {
+            powerUps.push(releasePowerUpMenos);
           }
 
           ball.reverse('y');
@@ -116,7 +117,7 @@ function draw() {
       }
     }
 
-    // DETECTART WIM OR LOST CAIDA PELOTAS 
+    // DETECTAR WIM OR LOST CAIDA PELOTAS 
 
     for (let i = balls.length - 1; i >= 0; i--) {
       const ball = balls[i];
@@ -174,6 +175,11 @@ function draw() {
     textSize(24);
     fill(255);
     text(`Score: ${playerScore}`, width / 2, height / 2 + 40);
+
+    balls = [];
+    bricks = [];
+    powerUps = [];
+    paddles = [];
   }
 
   function gameOver() {
@@ -186,6 +192,11 @@ function draw() {
     textSize(24);
     fill(255);
     text(`Score: ${playerScore}`, width / 2, height / 2 + 40);
+
+    balls = [];
+    bricks = [];
+    powerUps = [];
+    paddles = [];
   }
 
 }

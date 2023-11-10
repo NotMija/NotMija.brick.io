@@ -24,7 +24,7 @@ class Brick {
     return null;
   }
 
-  releasePowerUp2() {
+  releasePowerUpMas() {
     if (this.containsPaddleUP) {
       this.containsPaddleUP = false;
       return new PaddleUP(createVector(this.location.x + this.width / 2, this.location.y + this.height));
@@ -32,7 +32,7 @@ class Brick {
     return null;
   }
 
-  releasePowerUp3() {
+  releasePowerUpMenos() {
     if (this.containsPaddleDown) {
       this.containsPaddleDown = false;
       return new PaddleDown(createVector(this.location.x + this.width / 2, this.location.y + this.height));
