@@ -25,4 +25,13 @@ class Paddle {
       this.location.x = width - this.width
     }
   }
+  boost(boostSpeed) {
+    // Aumentar la velocidad actual del paddle
+    this.speed.right.mult(boostSpeed);
+    this.speed.left.mult(boostSpeed);
+  }
+  restoreOriginalSpeed() {
+    this.speed.right.mult(1 / boostSpeed);
+    this.speed.left.mult(1 / boostSpeed)
+}
 }

@@ -5,6 +5,8 @@ let bricks;
 let gameState;
 let powerUps; // Arreglo para rastrear los power-ups
 let paddles;
+let boostSpeed = 2;
+let boosting = false;
 
 function setup() {
   let canvas = createCanvas(900, 600);
@@ -17,6 +19,8 @@ function setup() {
   powerUps = [];
   paddles = [paddle] // para que aumente o se recorte
   window.addEventListener('keydown', reiniciarConTeclaF);
+  window.addEventListener('keydown', activarBoost);
+  window.addEventListener('keyup', desactivarBoost);
 }
 
 // Colores y crear los brick filas, colums
@@ -62,6 +66,10 @@ function draw() {
       ball.bouncePaddle();
       ball.update();
       ball.display();
+
+      if (boosting) {
+        paddle.boost(boostSpeed);
+      }
 
       for (let j = bricks.length - 1; j >= 0; j--) {
         const brick = bricks[j];
@@ -199,4 +207,22 @@ function draw() {
     paddles = [];
   }
 
+}
+function activarBoost(event) {
+  // Verificar si la tecla presionada es la tecla Tab (código de tecla 9)
+  if (event.key === ' ') {
+    event.preventDefault();
+    // Aplicar el aumento de velocidad al paddle
+    paddle.boost(boostSpeed);
+  }
+}
+function desactivarBoost(event) {
+  // Verificar si la tecla liberada es la barra espaciadora
+  if (event.key === ' ') {
+    
+    event.preventDefault();
+
+    boosting = false / 2  ; // le meto un /2 para quitar el x2 que se aplica y no haga bug
+    paddle.restoreOriginalSpeed();
+  }
 }
